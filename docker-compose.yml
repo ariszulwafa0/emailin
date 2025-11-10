@@ -1,0 +1,36 @@
+# 🐳 Docker Configuration for Production
+
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:/app/data/database.db
+      - UPLOAD_DIR=/app/uploads
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+    restart: unless-stopped
+    
+  # Optional: Add MySQL for production instead of SQLite
+  # db:
+  #   image: mysql:8.0
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: your_root_password
+  #     MYSQL_DATABASE: emailin
+  #     MYSQL_USER: emailin_user
+  #     MYSQL_PASSWORD: your_password
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   restart: unless-stopped
+
+volumes:
+  data:
+  uploads:
+  # mysql_data:
